@@ -1,0 +1,84 @@
+.experience {
+  background: var(--bg);
+  padding: 7rem 4rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 3rem;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid var(--line);
+  cursor: default;
+  transition: background 0.2s;
+}
+
+.item:first-child {
+  border-top: 1px solid var(--line);
+}
+
+.date {
+  font-size: 0.78rem;
+  color: var(--ink-light);
+  letter-spacing: 0.04em;
+  padding-top: 0.25rem;
+  font-weight: 400;
+}
+
+.company {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  transition: color 0.2s;
+}
+
+.item:hover .company {
+  color: var(--accent);
+}
+
+.role {
+  font-size: 0.82rem;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.desc {
+  font-size: 0.9rem;
+  color: var(--ink-mid);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 1rem;
+}
+
+.tag {
+  font-size: 0.72rem;
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 2rem;
+  color: var(--ink-light);
+}
+
+@media (max-width: 960px) {
+  .experience {
+    padding: 5rem 2rem;
+  }
+  .item {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}

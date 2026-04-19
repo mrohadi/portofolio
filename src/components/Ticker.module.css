@@ -1,0 +1,37 @@
+.wrap {
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 0.9rem 0;
+  background: var(--bg2);
+}
+
+.track {
+  display: flex;
+  gap: 0;
+  animation: ticker 28s linear infinite;
+  width: max-content;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  font-weight: 500;
+  padding: 0 2rem;
+  white-space: nowrap;
+}
+
+.dot {
+  color: var(--accent);
+  font-size: 1rem;
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}

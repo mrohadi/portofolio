@@ -1,0 +1,68 @@
+.services {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 7rem 4rem;
+}
+
+.services :global(.section-label) {
+  color: var(--accent);
+}
+
+.services :global(.section-label)::before {
+  background: var(--accent);
+}
+
+.title {
+  color: var(--bg);
+}
+
+.subtitle {
+  color: oklch(70% 0.01 250);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5px;
+}
+
+.card {
+  border: 1px solid oklch(25% 0.01 250);
+  padding: 2.5rem;
+  transition: background 0.2s;
+  cursor: default;
+}
+
+.card:hover {
+  background: oklch(20% 0.01 250);
+}
+
+.icon {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.name {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.8rem;
+  color: var(--bg);
+}
+
+.desc {
+  font-size: 0.87rem;
+  color: oklch(65% 0.01 250);
+  line-height: 1.75;
+  font-weight: 300;
+}
+
+@media (max-width: 960px) {
+  .services {
+    padding: 5rem 2rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

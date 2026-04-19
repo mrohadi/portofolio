@@ -1,0 +1,169 @@
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  padding: 8rem 4rem 6rem;
+  gap: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.left {
+  padding-bottom: 2rem;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+
+.eyebrow::before {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 1.5px;
+  background: var(--accent);
+}
+
+.name {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(3.5rem, 7vw, 6.5rem);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+
+.name em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.tagline {
+  font-size: 1.1rem;
+  color: var(--ink-mid);
+  max-width: 400px;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2rem;
+  position: relative;
+}
+
+.photoWrap {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin-left: auto;
+}
+
+.photoWrap::before {
+  content: '';
+  position: absolute;
+  inset: -8px -8px 8px 8px;
+  border: 1.5px solid var(--accent-dim);
+  border-radius: 2px;
+  z-index: 0;
+}
+
+.photo {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  position: relative;
+  z-index: 1;
+  filter: grayscale(15%);
+  transition: filter 0.4s;
+}
+
+.photo:hover {
+  filter: grayscale(0%);
+}
+
+.stats {
+  display: flex;
+  gap: 2.5rem;
+}
+
+.statNum {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--ink);
+  line-height: 1;
+}
+
+.statNum span {
+  color: var(--accent);
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--ink-light);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+
+.scrollHint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink-light);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  animation: bob 2s ease-in-out infinite;
+}
+
+.scrollLine {
+  width: 1px;
+  height: 3rem;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+@media (max-width: 960px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 7rem 2rem 4rem;
+  }
+  .right {
+    display: none;
+  }
+  .stats {
+    gap: 1.5rem;
+  }
+}

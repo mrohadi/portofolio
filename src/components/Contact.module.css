@@ -1,0 +1,170 @@
+.contact {
+  background: var(--bg);
+  padding: 7rem 4rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+}
+
+.bigTitle {
+  font-size: clamp(2.5rem, 5vw, 4.5rem) !important;
+  line-height: 1.05;
+}
+
+.accent {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.rowLast {
+  border-bottom: none;
+}
+
+.icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+
+.label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-light);
+  margin-bottom: 0.2rem;
+}
+
+.value {
+  font-size: 0.92rem;
+  color: var(--ink);
+  font-weight: 400;
+}
+
+.value a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.value a:hover {
+  color: var(--accent);
+}
+
+.formWrap {
+  position: relative;
+}
+
+.success {
+  background: var(--accent);
+  color: var(--bg);
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.group label {
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-mid);
+  font-weight: 500;
+}
+
+.group input,
+.group textarea,
+.group select {
+  background: var(--bg2);
+  border: 1px solid var(--line);
+  padding: 0.85rem 1rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s;
+  resize: none;
+  border-radius: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+}
+
+.group input:focus,
+.group textarea:focus,
+.group select:focus {
+  border-color: var(--accent);
+}
+
+.group textarea {
+  height: 120px;
+}
+
+.submit {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 1rem 2.5rem;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.87rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: background 0.2s;
+  align-self: flex-start;
+  border-radius: 2rem;
+}
+
+.submit:hover {
+  background: var(--accent);
+}
+
+@media (max-width: 960px) {
+  .contact {
+    padding: 5rem 2rem;
+  }
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}

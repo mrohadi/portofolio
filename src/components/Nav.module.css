@@ -1,0 +1,74 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background: transparent;
+  transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+}
+
+.scrolled {
+  background: oklch(98% 0.008 75 / 0.88);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--line);
+}
+
+.logo {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+
+.links a {
+  text-decoration: none;
+  color: var(--ink-mid);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.links a:hover {
+  color: var(--accent);
+}
+
+.cta {
+  background: var(--ink);
+  color: var(--bg) !important;
+  padding: 0.5rem 1.2rem;
+  border-radius: 2rem;
+  transition: background 0.2s !important;
+}
+
+.cta:hover {
+  background: var(--accent) !important;
+  color: var(--bg) !important;
+}
+
+@media (max-width: 960px) {
+  .nav {
+    padding: 1.2rem 2rem;
+  }
+  .links {
+    display: none;
+  }
+}
