@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}   # mrohadi/portofolio
+  IMAGE_NAME: ${{ github.repository }} # mrohadi/portofolio
 
 jobs:
   # ────────────────────────────────────────────────────────────────────────────
@@ -46,7 +46,7 @@ jobs:
 
     permissions:
       contents: read
-      packages: write   # required to push to GHCR
+      packages: write # required to push to GHCR
 
     outputs:
       image: ${{ steps.meta.outputs.tags && env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -98,7 +98,7 @@ jobs:
           username: ${{ secrets.LIGHTSAIL_USER }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           source: docker-compose.yml
-          target: /opt/portofolio
+          target: /portofolio
 
       - name: Pull image & restart containers
         uses: appleboy/ssh-action@v1.0.3
@@ -113,7 +113,7 @@ jobs:
             # authenticate to GHCR (token is read-only, safe for pull)
             echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
-            cd /opt/portofolio
+            cd /portofolio
 
             # pull latest image and recreate the container
             docker compose pull
