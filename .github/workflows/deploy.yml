@@ -98,7 +98,7 @@ jobs:
           username: ${{ secrets.LIGHTSAIL_USER }}
           key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           source: docker-compose.yml
-          target: /portofolio
+          target: /home/ec2-user/portofolio
 
       - name: Pull image & restart containers
         uses: appleboy/ssh-action@v1.0.3
@@ -113,7 +113,7 @@ jobs:
             # authenticate to GHCR (token is read-only, safe for pull)
             echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
-            cd /portofolio
+            cd /home/ec2-user/portofolio
 
             # pull latest image and recreate the container
             docker compose pull
