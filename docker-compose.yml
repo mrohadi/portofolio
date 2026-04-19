@@ -1,5 +1,5 @@
 services:
-  app:
+  portofolio:
     image: ghcr.io/mrohadi/portofolio:latest
     restart: unless-stopped
     ports:
