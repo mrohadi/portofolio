@@ -7,10 +7,8 @@ on:
     branches: [main]
 
 env:
-  AWS_REGION: ap-southeast-1          # change to your Lightsail region
-  ECR_REPOSITORY: portofolio          # ECR repo name
-  LIGHTSAIL_SERVICE: portofolio-svc   # Lightsail container service name
-  CONTAINER_NAME: portofolio          # container name inside the service
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}   # mrohadi/portofolio
 
 jobs:
   # ────────────────────────────────────────────────────────────────────────────
@@ -37,88 +35,89 @@ jobs:
         run: npx tsc --noEmit
 
   # ────────────────────────────────────────────────────────────────────────────
-  # 2. Build & push Docker image to Amazon ECR, deploy to Lightsail
+  # 2. Build & push Docker image to GHCR
   #    Runs only on push to main (not on PRs)
   # ────────────────────────────────────────────────────────────────────────────
-  deploy:
-    name: Build, push & deploy
+  build-and-push:
+    name: Build & push image
     runs-on: ubuntu-latest
     needs: lint
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
     permissions:
-      id-token: write   # required for OIDC authentication
       contents: read
+      packages: write   # required to push to GHCR
+
+    outputs:
+      image: ${{ steps.meta.outputs.tags && env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure AWS credentials (OIDC)
-        uses: aws-actions/configure-aws-credentials@v4
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: ${{ env.AWS_REGION }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Login to Amazon ECR
-        id: ecr-login
-        uses: aws-actions/amazon-ecr-login@v2
+      - name: Extract image metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,format=long
+            type=raw,value=latest
 
-      - name: Build, tag & push image
-        id: build
-        env:
-          REGISTRY: ${{ steps.ecr-login.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
-        run: |
-          docker build -t $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
-                       -t $REGISTRY/$ECR_REPOSITORY:latest .
-          docker push $REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$ECR_REPOSITORY:latest
-          echo "image=$REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          cache-to: type=inline
 
-      - name: Deploy to Lightsail container service
-        env:
-          IMAGE: ${{ steps.build.outputs.image }}
-        run: |
-          aws lightsail create-container-service-deployment \
-            --service-name "$LIGHTSAIL_SERVICE" \
-            --containers "{
-              \"$CONTAINER_NAME\": {
-                \"image\": \"$IMAGE\",
-                \"ports\": {\"3000\": \"HTTP\"},
-                \"environment\": {
-                  \"NODE_ENV\": \"production\",
-                  \"PORT\": \"3000\",
-                  \"HOSTNAME\": \"0.0.0.0\"
-                }
-              }
-            }" \
-            --public-endpoint "{
-              \"containerName\": \"$CONTAINER_NAME\",
-              \"containerPort\": 3000,
-              \"healthCheck\": {
-                \"path\": \"/\",
-                \"intervalSeconds\": 10,
-                \"timeoutSeconds\": 5,
-                \"successCodes\": \"200-299\",
-                \"unhealthyThreshold\": 3,
-                \"healthyThreshold\": 2
-              }
-            }"
+  # ────────────────────────────────────────────────────────────────────────────
+  # 3. SSH into Lightsail instance and deploy with docker-compose
+  # ────────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to Lightsail
+    runs-on: ubuntu-latest
+    needs: build-and-push
 
-      - name: Wait for deployment to succeed
-        run: |
-          echo "Waiting for Lightsail deployment to reach ACTIVE state..."
-          for i in $(seq 1 30); do
-            STATE=$(aws lightsail get-container-services \
-              --service-name "$LIGHTSAIL_SERVICE" \
-              --query "containerServices[0].state" \
-              --output text)
-            echo "  attempt $i: state=$STATE"
-            if [ "$STATE" = "RUNNING" ]; then
-              echo "Deployment successful."
-              exit 0
-            fi
-            sleep 20
-          done
-          echo "Deployment did not reach RUNNING state in time." >&2
-          exit 1
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.LIGHTSAIL_HOST }}
+          username: ${{ secrets.LIGHTSAIL_USER }}
+          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          source: docker-compose.yml
+          target: /opt/portofolio
+
+      - name: Pull image & restart containers
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.LIGHTSAIL_HOST }}
+          username: ${{ secrets.LIGHTSAIL_USER }}
+          key: ${{ secrets.LIGHTSAIL_SSH_KEY }}
+          envs: GITHUB_TOKEN,GITHUB_ACTOR
+          script: |
+            set -e
+
+            # authenticate to GHCR (token is read-only, safe for pull)
+            echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+
+            cd /opt/portofolio
+
+            # pull latest image and recreate the container
+            docker compose pull
+            docker compose up -d --remove-orphans
+
+            # clean up dangling images to save disk space
+            docker image prune -f
