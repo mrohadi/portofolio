@@ -7,7 +7,8 @@ export default function Hero() {
       <div className={styles.left}>
         <div className={styles.eyebrow}>Available for freelance</div>
         <h1 className={styles.name}>
-          Muhammad<br />
+          Muhammad
+          <br />
           <em>Rohadi</em>
         </h1>
         <p className={styles.tagline}>
@@ -15,8 +16,12 @@ export default function Hero() {
           back-end systems and clean front-end experiences.
         </p>
         <div className={styles.actions}>
-          <a href="#projects" className="btn-primary">View My Work →</a>
-          <a href="#contact" className="btn-secondary">Let&apos;s Talk</a>
+          <a href="#projects" className="btn-primary">
+            View My Work →
+          </a>
+          <a href="#contact" className="btn-secondary">
+            Let&apos;s Talk
+          </a>
         </div>
       </div>
 
@@ -31,20 +36,6 @@ export default function Hero() {
             priority
             loading="eager"
           />
-        </div>
-        <div className={styles.stats}>
-          <div className={styles.statItem}>
-            <div className={styles.statNum}>5<span>+</span></div>
-            <div className={styles.statLabel}>Years Experience</div>
-          </div>
-          <div className={styles.statItem}>
-            <div className={styles.statNum}>10<span>+</span></div>
-            <div className={styles.statLabel}>Projects Delivered</div>
-          </div>
-          <div className={styles.statItem}>
-            <div className={styles.statNum}>5<span>★</span></div>
-            <div className={styles.statLabel}>Upwork Rating</div>
-          </div>
         </div>
       </div>
 

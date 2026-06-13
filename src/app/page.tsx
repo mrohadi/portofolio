@@ -1,16 +1,15 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import Ticker from "@/components/Ticker";
 import About from "@/components/About";
-import Skills from "@/components/Skills";
-import Experience from "@/components/Experience";
-import Projects from "@/components/Projects";
-import Services from "@/components/Services";
-import Testimonials from "@/components/Testimonials";
 import Blog from "@/components/Blog";
 import Contact from "@/components/Contact";
+import Experience from "@/components/Experience";
 import Footer from "@/components/Footer";
+import Hero from "@/components/Hero";
+import Nav from "@/components/Nav";
+import Projects from "@/components/Projects";
 import ScrollReveal from "@/components/ScrollReveal";
+import Services from "@/components/Services";
+import Skills from "@/components/Skills";
+import Ticker from "@/components/Ticker";
 
 export default function Home() {
   return (
@@ -24,7 +23,7 @@ export default function Home() {
       <Experience />
       <Projects />
       <Services />
-      <Testimonials />
+      {/* <Testimonials /> */}
       <Blog />
       <Contact />
       <Footer />
